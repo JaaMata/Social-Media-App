@@ -10,8 +10,15 @@ class Home(View):
     def get(self, request, *args, **kwargs):
         context = {}
         # Get the profile and the post related to them
+        
+        if kwargs.get('id'):
+            id = kwargs.get('id')
+        else:
+            id = request.user.id
+
+
         profiles = Profile.objects.all()
-        profile = profiles.filter(id=kwargs.get('profile_id')).first()
+        profile = profiles.filter(id=id).first()
         context['profile'] = profile
         posts = Post.objects.all().filter(user=profile)
         context['posts'] = posts

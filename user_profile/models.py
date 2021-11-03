@@ -11,7 +11,7 @@ from django.db.models.deletion import CASCADE
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=CASCADE)
-    bio = models.CharField(max_length=200)
+    bio = models.CharField(max_length=200, null=True)
     profile_image = models.ImageField(upload_to='profile_images', default='profile_images/default.svg')
 
     def __str__(self) -> str:
