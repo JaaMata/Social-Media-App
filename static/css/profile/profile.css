@@ -1,6 +1,39 @@
-.preview-post-img {
-    width: 5%;
+.content {
+    display: grid;
+    margin-left: 4.5em;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas:
+        "main main main"
+        "main main main"
+        "posts posts posts";
+
 }
+
+.posts {
+    grid-area: posts;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 2em;
+    width: 18em;
+
+
+}
+
+.main {
+    grid-area: main;
+}
+
+
+.profile-info {
+    display: flex;
+    flex-direction: row;
+}
+
+.preview-post-img {
+    width: 18em;
+}
+
 
 .user-profile-img {
     width: 100px;

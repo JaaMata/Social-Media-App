@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views import View
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+
 
 from .models import Follower, Post, Profile
 
@@ -9,42 +12,56 @@ class Home(View):
     template_name = 'profile/profile.html'
     def get(self, request, *args, **kwargs):
         context = {}
-        # Get the profile and the post related to them
-        if kwargs.get('profile_id'):
-            id = kwargs.get('profile_id')
-        else:
-            id = request.user.id
-        print(id)
+        # URL ID handling
+        try:
+            profile_id = Profile.objects.get(user=request.user).id
+        except TypeError:
+            return redirect('login')
 
-        profiles = Profile.objects.all()
-        profile = profiles.filter(id=id).first()
-        context['profile'] = profile
-        posts = Post.objects.all().filter(user=profile)
+        if not kwargs.get('profile_id'):
+            profile_id = Profile.objects.get(user=request.user).id
+
+        else:
+            profile_id = kwargs.get('profile_id')
+
+        # Gets Profiles
+
+        current_profile = Profile.objects.get(id=profile_id)
+        context['profile'] = current_profile
+
+        request_user = Profile.objects.get(user=request.user)
+        context['request_user'] = request_user
+
+        # Gets posts
+
+        posts = Post.objects.all().filter(user=current_profile)
         context['posts'] = posts
 
-        # Follower and Following Count
-        follow_model = Follower.objects.all()
-        followers = follow_model.filter(following_user_id=profile).count()
-        following = follow_model.filter(follower_user_id=profile).count()
+        # Following System
+
+        following_obj = Follower.objects.all()
+
+        request_user_following = following_obj.filter(follower_user_id=request_user, following_user_id=current_profile)
+        context['is_following'] = request_user_following
+
+        followers = following_obj.filter(following_user_id=current_profile).count()
         context['followers'] = followers
+
+        following = following_obj.filter(follower_user_id=current_profile).count()
         context['following'] = following
 
-        # Follow logic
-        request_user_profile = profiles.filter(user=request.user)[0]
-        follower_query = Follower.objects.all().filter(follower_user_id=request_user_profile)
-        if follower_query:
-            context['followed'] = True
-        
-        context['current_profile_id'] = profile.id
-        context['request_profile_id'] = request_user_profile.id
 
         return render(request, self.template_name, context)
-
-
+        
+        
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class FollowView(View):
     def get(self, request, *args, **kwargs):
-        follower = Profile.objects.get(id=kwargs.get('follower'))
+        follower = Profile.objects.get(user=kwargs.get('follower'))
         following = Profile.objects.get(id=kwargs.get('following'))
+
+        if Follower.objects.filter(follower_user_id=follower, following_user_id=following).count() >= 1:
+            return redirect('profile', profile_id=kwargs.get('following'))
 
         if follower == following:
             return redirect('profile', profile_id=kwargs.get('following'))
@@ -56,15 +73,21 @@ class FollowView(View):
         return redirect('profile', profile_id=kwargs.get('following'))
 
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class UnfollowView(View):
     def get(self, request, *args, **kwargs):
         follower = Profile.objects.get(id=kwargs.get('follower'))
         following = Profile.objects.get(id=kwargs.get('following'))
 
+        if Follower.objects.filter(follower_user_id=follower, following_user_id=following).count() < 1:
+            return redirect('profile', profile_id=kwargs.get('following'))
+
         if follower == following:
             return redirect('profile', profile_id=kwargs.get('following'))
 
-        follow_instance = Follower.objects.get(following_user_id=following,follower_user_id=follower)
+        follow_instance = Follower.objects.get(following_user_id=following, follower_user_id=follower)
+        print(follow_instance)
         follow_instance.delete()
 
         return redirect('profile', profile_id=kwargs.get('following'))
+

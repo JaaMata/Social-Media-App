@@ -8,35 +8,42 @@
 {% endblock head %}
 
 {% block body %}
-      
-  <h1>{{profile.user.username}}</h1>
+<div class="main">
+
+<div class="profile-info">
   <img class="user-profile-img" src="{{profile.profile_image.url}}" alt="">
+  <h1>{{profile.user.username}}</h1>
   <p>Followers: {{followers}} </p>
   <p>Following: {{following}}</p>
-  {% if request_profile_id != current_profile_id %}
-    {% if followed %}
-    <a href="{% url 'unfollow' follower=request_profile_id following=current_profile_id  %}">
+
+
+  {% if profile == request_user %}
+  <a href="">
+    <button class="settings-btn">Settings</button>
+  </a>
+    
+  {% else %}
+
+  
+  {% if is_following %}
+    <a href="{% url 'unfollow' follower=request_user.id following=profile.id  %}">
     <button class="unfollow-btn">Following</button>
     </a>
       {% else %}
-      <a href="{% url 'follow' follower=request_profile_id following=current_profile_id  %}">
+      <a href="{% url 'follow' follower=request_user.id following=profile.id  %}">
       <button class="follow-btn">Follow</button>
     </a>
     
-    {% endif %}
-
-
-  {% else %}
-    <a href="">
-      <button class="settings-btn">Settings</button>
-    </a>
-
   {% endif %}
-
+  {% endif %}
+</div>
+</div>
+<div class="posts">
 
   {% for i in posts %}
-    <a href=""><img class="preview-post-img" src="{{i.image.url}}" alt=""></a>
+    <a class="post-link" href=""><img class="preview-post-img" src="{{i.image.url}}" alt=""></a>
   {% endfor %}
+</div>
   {% endblock body %}
 {% block js %}
   <script src="{% static 'js/profile.js' %}"></script>
