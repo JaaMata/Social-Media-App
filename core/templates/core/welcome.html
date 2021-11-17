@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/core/welcome.css' %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+{% endblock head %}
+
+{% block body %}
+<div class="main">
+    <div class="main-content">
+        <h1 class="heading">Welcome fellow <span id="heading-span">Camper</span></h1>
+    </div>
+</div>
+
+<script src="{% static 'js/core/welcome.js' %}"></script>
+{% endblock body %}

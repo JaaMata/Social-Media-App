@@ -1,0 +1,36 @@
+body {
+    margin: 0;
+    padding: 0;
+
+}
+
+.content {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+        "main"
+        "sub";
+}
+
+
+.main {
+    grid-area: main;
+    background: url('/static/images/core/welcome/bg.svg') no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+    background-size: cover;
+    height: 100vh;
+}
+
+.main-content {
+    display: flex;
+    margin-top: 25em;
+    align-items: center;
+    justify-content: center;
+}
+
+.heading {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+
+}
