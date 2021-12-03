@@ -5,7 +5,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
 
-from .models import Follower, Post, Profile
+from .models import Follower, Profile
+from posts.models import ImagePost
 
 # View of the profile page
 class Home(View):
@@ -25,7 +26,6 @@ class Home(View):
             profile_id = kwargs.get('profile_id')
 
         # Gets Profiles
-
         current_profile = Profile.objects.get(id=profile_id)
         context['profile'] = current_profile
 
@@ -33,12 +33,15 @@ class Home(View):
         context['request_user'] = request_user
 
         # Gets posts
-
-        posts = Post.objects.all().filter(user=current_profile)
+        posts = ImagePost.objects.all().filter(user=current_profile)
         context['posts'] = posts
 
-        # Following System
+        print(posts[0].likes.count())
+        
 
+
+
+        # Following System
         following_obj = Follower.objects.all()
 
         request_user_following = following_obj.filter(follower_user_id=request_user, following_user_id=current_profile)

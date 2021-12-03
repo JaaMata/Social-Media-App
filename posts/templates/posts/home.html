@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Feed</title>
+{% endblock head %}
+
+{% block body %}
+
+{% for i in posts %}
+
+  <img class="user-profile-img" src="{{i.image.url}}" alt="">
+  <p>{{i.}}</p>
+
+{% endfor %}
+
+{% endblock body %}

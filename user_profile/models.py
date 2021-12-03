@@ -1,12 +1,6 @@
-from collections import defaultdict
 from django.db import models
-from django.db.models.base import Model
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
-
-
-
-
 
 
 class Profile(models.Model):
@@ -16,16 +10,6 @@ class Profile(models.Model):
 
     def __str__(self) -> str:
         return self.user.username
-
-
-class Post(models.Model):
-    image = models.ImageField(upload_to='post_image')
-    description = models.CharField(max_length=200)
-    date_published = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(Profile, on_delete=CASCADE, null=True)
-
-    def __str__(self) -> str:
-        return self.user.user.username + "'s Post"
 
 
 class Follower(models.Model):
