@@ -1,27 +1,56 @@
 .content {
     display: grid;
     margin-left: 4.5em;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     grid-template-areas:
-        "main main main"
-        "main main main"
-        "posts posts posts";
+        "main main main tposts"
+        "iposts iposts iposts   tposts"
+        "iposts iposts iposts tposts";
 
 }
 
-.posts {
-    grid-area: posts;
+.image-posts {
+    grid-area: iposts;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 2em;
     width: 18em;
+}
 
+.preview-post-img {
+    width: 20em;
+    border-radius: 1em;
+}
+
+
+
+.text-posts {
+    grid-area: tposts;
+    display: grid;
+    background-color: rgb(0, 255, 191);
+    border-radius: 2em;
+    font-family: 'Roboto', sans-serif;
 
 }
 
+.heart-img {
+    width: 1em;
+}
+
+
+
 .main {
     grid-area: main;
+    display: grid;
+    grid-template-columns: 0.4fr .3fr .5fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas:
+        "profile-image username follow-btn"
+        "profile-image followers following"
+        "profile-image bio bio";
+    min-height: 0;
+    min-width: 0;
 }
 
 
@@ -30,14 +59,53 @@
     flex-direction: row;
 }
 
-.preview-post-img {
-    width: 18em;
-}
 
 
 .user-profile-img {
-    width: 100px;
+    grid-area: profile-image;
+    width: 50%;
     border-radius: 100%;
 
+
+}
+
+.f-btn {
+    grid-area: follow-btn;
+    color: white;
+    text-decoration: none;
+    background-color: #082032;
+    font-weight: 100;
+    font-family: 'Roboto Slab', serif;
+    padding: 1em;
+    border-radius: 2em;
+
+}
+
+.bio {
+    grid-area: bio;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+}
+
+.followers {
+    grid-area: followers;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+
+
+}
+
+.following {
+    grid-area: following;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+
+
+}
+
+.username {
+    grid-area: username;
+    font-family: 'Roboto', sans-serif;
+    font-size: 3rem;
 
 }

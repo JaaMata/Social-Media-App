@@ -3,48 +3,72 @@
 
 
 {% block head %}
-  <title>{{profile.user.username}}'s Profile</title>
-  <link rel="stylesheet" href="{% static 'css/profile/profile.css' %}">
+<title>{{profile.user.username}}'s Profile</title>
+<link rel="stylesheet" href="{% static 'css/profile/profile.css' %}">
 {% endblock head %}
 
 {% block body %}
 <div class="main">
 
-<div class="profile-info">
   <img class="user-profile-img" src="{{profile.profile_image.url}}" alt="">
-  <h1>{{profile.user.username}}</h1>
-  <p>Followers: {{followers}} </p>
-  <p>Following: {{following}}</p>
+  <h1 class="username">{{profile.user.username}}</h1>
+  <p class="followers">Followers: {{followers}} </p>
+  <p class="following">Following: {{following}}</p>
 
 
   {% if profile == request_user %}
   <a href="">
     <button class="settings-btn">Settings</button>
   </a>
-    
+
   {% else %}
 
-  
-  {% if is_following %}
-    <a href="{% url 'unfollow' follower=request_user.id following=profile.id  %}">
-    <button class="unfollow-btn">Following</button>
-    </a>
-      {% else %}
-      <a href="{% url 'follow' follower=request_user.id following=profile.id  %}">
-      <button class="follow-btn">Follow</button>
-    </a>
-    
-  {% endif %}
-  {% endif %}
-</div>
-</div>
-<div class="posts">
 
-  {% for i in posts %}
+  {% if is_following %}
+  <a class="unfollow-btn f-btn" href="{% url 'unfollow' follower=request_user.id following=profile.id  %}">
+    Following
+  </a>
+  {% else %}
+  <a class="follow-btn f-btn" href="{% url 'follow' follower=request_user.id following=profile.id  %}">
+    Follow
+  </a>
+
+  {% endif %}
+  {% endif %}
+  <p class="bio">{{profile.bio}}</p>
+</div>
+
+
+<div class="image-posts">
+  {% for i in image_posts %}
+  <div class="image-post">
     <a class="post-link" href=""><img class="preview-post-img" src="{{i.image.url}}" alt=""></a>
+  </div>
+  {% endfor %}
+
+</div>
+
+<div class="text-posts">
+  {% for i in text_posts %}
+
+  <div class="text-post">
+
+    <p class="text-post-content">{{i.content}}</p>
+
+    {% if total_likes >= 1 %}
+    <a href="">{{i.total_likes}}</a>
+    <a href=""><img class="heart-img" src="{% static 'images/heart.png' %}" alt="Outline of a heart"></a>
+    {% else %}
+    <a href=""><img class="heart-img" src="{% static 'images/heart.png' %}" alt="Outline of a heart"></a>
+
+    {% endif %}
+
+  </div>
+
   {% endfor %}
 </div>
-  {% endblock body %}
+
+{% endblock body %}
 {% block js %}
-  <script src="{% static 'js/profile.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
 {% endblock js %}

@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'chat',
+    'channels',
     'posts',
     'core',
     'authentication',
@@ -75,6 +77,18 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'social_media.wsgi.application'
+
+ASGI_APPLICATION = 'social_media.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
 
 
 # Database
@@ -130,6 +144,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 ALLOWED_HOSTS = ['*']
 X_FRAME_OPTIONS = '*'
+
 
 
 

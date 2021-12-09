@@ -1,12 +1,12 @@
-from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 
 
 from .models import Follower, Profile
-from posts.models import ImagePost
+from posts.models import ImagePost, TextPost
 
 # View of the profile page
 class Home(View):
@@ -33,10 +33,11 @@ class Home(View):
         context['request_user'] = request_user
 
         # Gets posts
-        posts = ImagePost.objects.all().filter(user=current_profile)
-        context['posts'] = posts
-
-        print(posts[0].likes.count())
+        image_posts = ImagePost.objects.all().filter(user=current_profile)
+        context['image_posts'] = image_posts
+            
+        text_posts = TextPost.objects.annotate(total_likes=Count('likes')).filter(user=current_profile)
+        context['text_posts'] = text_posts
         
 
 
