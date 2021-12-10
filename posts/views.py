@@ -11,7 +11,7 @@ class Home(View):
     def get(self, request, *args, **kwargs):
         context = {}
         request_profile = Profile.objects.get(user=request.user)
-        following = Follower.objects.all().filter(follower_user_id=request_profile)
+        following = Follower.objects.all().filter(follower_user_id=request_profile.id)
         postsmodel = ImagePost.objects.annotate(likees=Count('likes'))
 
 

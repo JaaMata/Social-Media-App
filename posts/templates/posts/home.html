@@ -7,7 +7,7 @@
 {% block body %}
 
 {% for i in posts %}
-  <img class="user-profile-img" src="{{i.image.url}}" alt="">
+  <a href=""><img class="user-profile-img" src="{{i.image.url}}" alt=""></a>
   <p>{{i.likees}}</p>
 {% endfor %}
 
