@@ -68,7 +68,10 @@
   {% endfor %}
 </div>
 
+{{ profile_id|json_script:"profile_id" }}
+
 {% endblock body %}
 {% block js %}
 <script src="{% static 'js/profile.js' %}"></script>
+
 {% endblock js %}

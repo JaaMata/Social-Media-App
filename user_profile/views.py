@@ -25,9 +25,11 @@ class Home(View):
         else:
             profile_id = kwargs.get('profile_id')
 
+        context['profile_id'] = profile_id
         # Gets Profiles
         current_profile = Profile.objects.get(id=profile_id)
         context['profile'] = current_profile
+        
 
         request_user = Profile.objects.get(user=request.user)
         context['request_user'] = request_user
