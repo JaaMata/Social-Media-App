@@ -11,8 +11,10 @@ class Home(View):
 
 
 
-
-def room(request, room_name):
-    return render(request, 'chat/room.html',context={
-        'room_name':room_name
-    })
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class Room(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'chat/room.html',context={
+            'room_name':kwargs['room_name'],
+            'user': request.user.username
+        })
